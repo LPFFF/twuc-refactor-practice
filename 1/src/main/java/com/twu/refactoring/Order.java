@@ -1,6 +1,7 @@
 package com.twu.refactoring;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order {
     String customerName;
@@ -26,28 +27,21 @@ public class Order {
     }
 
     double getTotalAmount() {
-        double totalAmount = 0d;
-        for (LineItem lineItem : getLineItems()) {
-            totalAmount += lineItem.getTotalAmount();
-        }
-        return totalAmount;
+        return getLineItems().stream()
+            .mapToDouble(LineItem::getTotalAmount)
+            .sum();
     }
 
     double calculateTotalSalesTax() {
-        double totalSalesTax = 0;
-        for (LineItem lineItem : getLineItems()) {
-            double salesTax = lineItem.getSalesTax();
-            totalSalesTax += salesTax;
-        }
-        return totalSalesTax;
+        return getLineItems().stream()
+            .mapToDouble(LineItem::getSalesTax)
+            .sum();
     }
 
     String getOrderLineItemsInfo() {
-        StringBuilder output = new StringBuilder();
-        for (LineItem lineItem : getLineItems()) {
-            output.append(lineItem.getLineItemInfo());
-        }
-        return output.toString();
+        return getLineItems().stream()
+            .map(LineItem::getLineItemInfo)
+            .collect(Collectors.joining());
     }
 
     String getCustomerInfo() {

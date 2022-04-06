@@ -37,15 +37,13 @@ public class LineItem {
 	}
 
 	String getLineItemInfo() {
-		StringBuilder output = new StringBuilder();
-		output.append(getDescription());
-		output.append('\t');
-		output.append(getPrice());
-		output.append('\t');
-		output.append(getQuantity());
-		output.append('\t');
-		output.append(totalAmount());
-		output.append('\n');
-		return output.toString();
+		return getDescription() +
+			'\t' +
+			getPrice() +
+			'\t' +
+			getQuantity() +
+			'\t' +
+			totalAmount() +
+			'\n';
 	}
 }
