@@ -27,4 +27,25 @@ public class LineItem {
     double totalAmount() {
         return price * quantity;
     }
+
+	double getSalesTax() {
+		return totalAmount() * .10;
+	}
+
+	double getTotalAmount() {
+		return totalAmount() + getSalesTax();
+	}
+
+	String getLineItemInfo() {
+		StringBuilder output = new StringBuilder();
+		output.append(getDescription());
+		output.append('\t');
+		output.append(getPrice());
+		output.append('\t');
+		output.append(getQuantity());
+		output.append('\t');
+		output.append(totalAmount());
+		output.append('\n');
+		return output.toString();
+	}
 }
