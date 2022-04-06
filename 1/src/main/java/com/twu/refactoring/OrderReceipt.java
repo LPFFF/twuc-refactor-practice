@@ -1,57 +1,58 @@
 package com.twu.refactoring;
 
-/**
- * OrderReceipt prints the details of order including customer name, address, description, quantity,
- * price and amount. It also calculates the sales tax @ 10% and prints as part
- * of order. It computes the total order amount (amount of individual lineItems +
- * total sales tax) and prints it.
- *
- */
 public class OrderReceipt {
     private final Order order;
 
     public OrderReceipt(Order order) {
         this.order = order;
-	}
+    }
 
-	public String printReceipt() {
-		StringBuilder output = new StringBuilder();
+    public String printReceipt() {
+        StringBuilder output = new StringBuilder();
 
-		// print headers
-		output.append("======Printing Orders======\n");
+        output.append("======Printing Orders======\n");
+        output.append(getCustomerInfo());
+        output.append(getOrderLineItemsInfo());
+        output.append("Sales Tax").append('\t').append(calculateTotalSalesTax());
+        output.append("Total Amount").append('\t').append(getTotalAmount());
 
-		// print date, bill no, customer name
-//        output.append("Date - " + order.getDate();
-        output.append(order.getCustomerName());
-        output.append(order.getCustomerAddress());
-//        output.append(order.getCustomerLoyaltyNumber());
+        return output.toString();
+    }
 
-		// prints lineItems
-		double totalSalesTax = 0d;
-		double totalAmount = 0d;
-		for (LineItem lineItem : order.getLineItems()) {
-			output.append(lineItem.getDescription());
-			output.append('\t');
-			output.append(lineItem.getPrice());
-			output.append('\t');
-			output.append(lineItem.getQuantity());
-			output.append('\t');
-			output.append(lineItem.totalAmount());
-			output.append('\n');
+    private double getTotalAmount() {
+        double totalAmount = 0d;
+        for (LineItem lineItem : order.getLineItems()) {
+            double salesTax = lineItem.totalAmount() * .10;
+            totalAmount += lineItem.totalAmount() + salesTax;
+        }
+        return totalAmount;
+    }
 
-			// calculate sales tax @ rate of 10%
+    private double calculateTotalSalesTax() {
+        double totalSalesTax = 0;
+        for (LineItem lineItem : order.getLineItems()) {
             double salesTax = lineItem.totalAmount() * .10;
             totalSalesTax += salesTax;
+        }
+        return totalSalesTax;
+    }
 
-            // calculate total amount of lineItem = price * quantity + 10 % sales tax
-            totalAmount += lineItem.totalAmount() + salesTax;
-		}
+    private String getOrderLineItemsInfo() {
+        StringBuilder output = new StringBuilder();
+        for (LineItem lineItem : order.getLineItems()) {
+            output.append(lineItem.getDescription());
+            output.append('\t');
+            output.append(lineItem.getPrice());
+            output.append('\t');
+            output.append(lineItem.getQuantity());
+            output.append('\t');
+            output.append(lineItem.totalAmount());
+            output.append('\n');
+        }
+        return output.toString();
+    }
 
-		// prints the state tax
-		output.append("Sales Tax").append('\t').append(totalSalesTax);
-
-        // print total amount
-		output.append("Total Amount").append('\t').append(totalAmount);
-		return output.toString();
-	}
+    private String getCustomerInfo() {
+        return order.getCustomerName() + order.getCustomerAddress();
+    }
 }
