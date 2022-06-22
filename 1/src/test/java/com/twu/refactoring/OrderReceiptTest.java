@@ -11,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class OrderReceiptTest {
     @Test
     public void shouldPrintCustomerInformationOnOrder() {
-        Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<LineItem>());
+        Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<>());
         OrderReceipt receipt = new OrderReceipt(order);
 
         String output = receipt.printReceipt();
@@ -27,7 +27,7 @@ public class OrderReceiptTest {
             add(new LineItem("biscuits", 5.0, 5));
             add(new LineItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems));
+        OrderReceipt receipt = new OrderReceipt(new Order("张三", "西安", lineItems));
 
         String output = receipt.printReceipt();
 
@@ -36,6 +36,7 @@ public class OrderReceiptTest {
         assertThat(output, containsString("chocolate\t20.0\t1\t20.0\n"));
         assertThat(output, containsString("Sales Tax\t6.5"));
         assertThat(output, containsString("Total Amount\t71.5"));
+        System.out.println(output);
     }
 
 }
